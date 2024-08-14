@@ -1,6 +1,8 @@
 package com.social.media.aggregator.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -66,10 +68,15 @@ public class InfluencerController {
 	public ResponseEntity<GenericResponse> getAllInfluencers() {
 		try {
 			List<Influencer> influencers = influencerService.getAllInfluencers();
-			return new ResponseEntity<>(
-					GenericResponse.builder().status(1).message("Influencers fetched Successfully")
-							.data(influencers.stream().map(Influencer::getName).collect(Collectors.toList())).build(),
-					HttpStatus.OK);
+			Map<String, String> result = new HashMap<>();
+			List<Map<String, Object>> influencerDetails = influencers.stream().map(influencer -> {
+				Map<String, Object> map = new HashMap<>();
+				map.put("influencerName", influencer.getName());
+				map.put("uuid", influencer.getUniquehash());
+				return map;
+			}).collect(Collectors.toList());
+			return new ResponseEntity<>(GenericResponse.builder().status(1).message("Influencers fetched Successfully")
+					.data(influencerDetails).build(), HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("Exception occurred at @InfluencerController : {}", ExceptionUtils.getStackTrace(e));
 			return new ResponseEntity<>(GenericResponse.builder().status(0).message(e.getMessage()).data(null).build(),

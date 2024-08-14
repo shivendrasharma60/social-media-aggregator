@@ -86,7 +86,7 @@ public class UserController {
 			@ApiResponse(responseCode = "500", description = "Internal server error", content = @Content) })
 	public ResponseEntity<GenericResponse> followInfluencers(
 			@Parameter(description = "Username of the user", required = true) @RequestParam String username,
-			@Parameter(description = "List of unique hashes of influencers to follow", required = true) @RequestBody List<String> uniquehashes) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of unique uuid of influencers to follow which you are getting in /influencers get API call", required = true, content = @Content(mediaType = "application/json", schema = @Schema(type = "array", example = "[\"hash1\", \"hash2\"]"))) @RequestBody List<String> uniquehashes) {
 		try {
 			userService.followInfluencers(username, uniquehashes);
 			return new ResponseEntity<>(GenericResponse.builder().status(1)
