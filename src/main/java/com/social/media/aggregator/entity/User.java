@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -22,17 +22,20 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(description = "Unique identifier for the user", example = "1", required = true)
+	@Parameter(description = "Unique identifier for the user", example = "1", required = true)
 	private Long id;
 
-	@Schema(description = "Username of the user", example = "john_doe", required = true)
+	@Parameter(description = "Username of the user", example = "john_doe", required = true)
 	private String username;
 
-	@Schema(description = "Password for the user", example = "password123", required = true)
+	@Parameter(description = "Password for the user", example = "password123", required = true)
 	private String password;
+
+	@Parameter(description = "This the mode that you want to view in either dark or light", example = "true", required = true)
+	private Boolean lightmode;
 
 	@ManyToMany
 	@JoinTable(name = "user_influencer", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "influencer_id"))
-	@Schema(description = "List of influencers that the user follows")
+	@Parameter(description = "List of influencers that the user follows")
 	private List<Influencer> influencers;
 }

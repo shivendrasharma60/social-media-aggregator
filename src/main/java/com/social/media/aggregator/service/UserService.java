@@ -1,5 +1,6 @@
 package com.social.media.aggregator.service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +36,9 @@ public class UserService {
 	public User registerUser(UserCreationDTO user) {
 		try {
 			User newUser = new User();
-			newUser.setPassword(user.getPassword());
+			newUser.setPassword(Base64.getEncoder().encodeToString(user.getPassword().getBytes()));
 			newUser.setUsername(user.getUsername());
+			newUser.setLightmode(user.getLightMode());
 			return userRepository.save(newUser);
 		} catch (Exception e) {
 			log.error("Exception occurred at registerUser at UserService : {}", ExceptionUtils.getStackTrace(e));
